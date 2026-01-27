@@ -8,7 +8,7 @@ Features:
 - [ ] Avatars
 - [X] Answering single choice questions
 - [ ] Answering multiple choice questions
-- [X] Answering True or False questions (The colors are swapped, will have to fix that)
+- [X] Answering True or False questions
 - [ ] Displaying points
 - [ ] Finishing a game
 - [ ] Leaving a game

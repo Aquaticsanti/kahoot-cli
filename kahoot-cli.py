@@ -9,35 +9,43 @@ import random
 def cls(): # Source - https://stackoverflow.com/a/684344
     os.system('cls' if os.name=='nt' else 'clear')
 
-def printSelectedAnswer(option_no: int = 0):
-    if option_no == 0:
-        print(colored(f"> {ans_red.text}", "red", None, ["bold"]))
-        print(colored(f"  {ans_blue.text}", "blue", None, ["bold"]))
-        if ans_yellow != "":
-            print(colored(f"  {ans_yellow.text}", "yellow", None, ["bold"])) # type: ignore
-        if ans_green != "":
-            print(colored(f"  {ans_green.text}", "green", None, ["bold"])) # type: ignore
-    elif option_no == 1:
-        print(colored(f"  {ans_red.text}", "red", None, ["bold"]))
-        print(colored(f"> {ans_blue.text}", "blue", None, ["bold"]))
-        if ans_yellow != "":
-            print(colored(f"  {ans_yellow.text}", "yellow", None, ["bold"])) # type: ignore
-        if ans_green != "":
-            print(colored(f"  {ans_green.text}", "green", None, ["bold"])) # type: ignore 
-    if option_no == 2:
-        print(colored(f"  {ans_red.text}", "red", None, ["bold"]))
-        print(colored(f"  {ans_blue.text}", "blue", None, ["bold"]))
-        if ans_yellow != "":
-            print(colored(f"> {ans_yellow.text}", "yellow", None, ["bold"])) # type: ignore
-        if ans_green != "":
-            print(colored(f"  {ans_green.text}", "green", None, ["bold"])) # type: ignore
-    elif option_no == 3:
-        print(colored(f"  {ans_red.text}", "red", None, ["bold"]))
-        print(colored(f"  {ans_blue.text}", "blue", None, ["bold"]))
-        if ans_yellow != "":
-            print(colored(f"  {ans_yellow.text}", "yellow", None, ["bold"])) # type: ignore
-        if ans_green != "":
-            print(colored(f"> {ans_green.text}", "green", None, ["bold"])) # type: ignore
+def printSelectedAnswer(option_no: int = 0, true_false: bool = False):
+    if true_false == False:
+        if option_no == 0:
+            print(colored(f"> {ans_red.text}", "red", None, ["bold"]))
+            print(colored(f"  {ans_blue.text}", "blue", None, ["bold"]))
+            if ans_yellow != "":
+                print(colored(f"  {ans_yellow.text}", "yellow", None, ["bold"])) # type: ignore
+            if ans_green != "":
+                print(colored(f"  {ans_green.text}", "green", None, ["bold"])) # type: ignore
+        elif option_no == 1:
+            print(colored(f"  {ans_red.text}", "red", None, ["bold"]))
+            print(colored(f"> {ans_blue.text}", "blue", None, ["bold"]))
+            if ans_yellow != "":
+                print(colored(f"  {ans_yellow.text}", "yellow", None, ["bold"])) # type: ignore
+            if ans_green != "":
+                print(colored(f"  {ans_green.text}", "green", None, ["bold"])) # type: ignore 
+        if option_no == 2:
+            print(colored(f"  {ans_red.text}", "red", None, ["bold"]))
+            print(colored(f"  {ans_blue.text}", "blue", None, ["bold"]))
+            if ans_yellow != "":
+                print(colored(f"> {ans_yellow.text}", "yellow", None, ["bold"])) # type: ignore
+            if ans_green != "":
+                print(colored(f"  {ans_green.text}", "green", None, ["bold"])) # type: ignore
+        elif option_no == 3:
+            print(colored(f"  {ans_red.text}", "red", None, ["bold"]))
+            print(colored(f"  {ans_blue.text}", "blue", None, ["bold"]))
+            if ans_yellow != "":
+                print(colored(f"  {ans_yellow.text}", "yellow", None, ["bold"])) # type: ignore
+            if ans_green != "":
+                print(colored(f"> {ans_green.text}", "green", None, ["bold"])) # type: ignore
+    elif true_false == True:
+        if option_no == 0:
+            print(colored(f"> {ans_red.text}", "blue", None, ["bold"])) # Yes, red is blue and blue is red. I know that.
+            print(colored(f"  {ans_blue.text}", "red", None, ["bold"]))
+        elif option_no == 1:
+            print(colored(f"  {ans_red.text}", "blue", None, ["bold"]))
+            print(colored(f"> {ans_blue.text}", "red", None, ["bold"]))
 
 correctMessages = ["Way to go, superstar!", "Amazing!", "Trust me, your oponents are jealous.", "One step closer to victory!", "Keep the flame lit!"]
 wrongMessages = ["Don't worry, you'll get them next time!", "Never back down never what?", "", "Nice try!"]
@@ -105,7 +113,6 @@ nickname = input("What's your name? (Don't use your real name): ")
 name_box.send_keys(nickname)
 name_submit.click()
 
-time.sleep(3)
 
 while True:
     if driver.current_url == "https://kahoot.it/instructions":
@@ -116,7 +123,7 @@ while True:
         try:
             error_name_box = driver.find_element(By.CSS_SELECTOR, "[data-functional-selector='duplicate-name-error-notification']")
         except:
-            break
+            continue
         else:
             nickname = input("Uh oh, that name's taken... Choose another one (Don't use your real name): ")
             name_box.clear()
@@ -130,16 +137,28 @@ while driver.current_url != "https://kahoot.it/start":
 
 print("Get ready!")
 
-while driver.current_url != "https://kahoot.it/gameblock":
-    pass
-time.sleep(2)
+
 
 question_no = 1
 
 while True: # This encapsulates the whole game logic.
+    
+
+    while driver.current_url != "https://kahoot.it/gameblock":
+        pass
+    time.sleep(1)
+
     cls() # Source - https://stackoverflow.com/a/684344, Clears entire CLI
 
     question_title = driver.find_element(By.CSS_SELECTOR, "[data-functional-selector='block-title']")
+
+    try:
+        true_or_false = driver.find_element(By.CSS_SELECTOR, "[data-functional-selector='question-type-heading-trueOrFalseTitle']")
+    except:
+        true_or_false = False
+    else:
+        true_or_false = True
+
 
     print(f"Question {question_no} - {question_title.text}")
 
@@ -163,12 +182,7 @@ while True: # This encapsulates the whole game logic.
 
     selected_ans = 0
 
-    print(colored(f"  {ans_red.text}", "red", None, ["bold"]))
-    print(colored(f"  {ans_blue.text}", "blue", None, ["bold"]))
-    if ans_yellow != "":
-        print(colored(f"  {ans_yellow.text}", "yellow", None, ["bold"]))
-    if ans_green != "":
-        print(colored(f"  {ans_green.text}", "green", None, ["bold"]))
+    printSelectedAnswer()
 
 
     while True:
@@ -178,14 +192,14 @@ while True: # This encapsulates the whole game logic.
             selected_ans -= 1
             if selected_ans < 0:
                 selected_ans = amountOptions
-            printSelectedAnswer(selected_ans)
+            printSelectedAnswer(selected_ans, true_or_false)
         if keypress == key.DOWN:
             selected_ans += 1
             if selected_ans > amountOptions:
                 selected_ans = 0
-            printSelectedAnswer(selected_ans)
+            printSelectedAnswer(selected_ans, true_or_false)
         if keypress == key.ENTER:
-            printSelectedAnswer(selected_ans)
+            printSelectedAnswer(selected_ans, true_or_false)
             if selected_ans == 0:
                 ans_red.click()
             elif selected_ans == 1:
@@ -214,7 +228,4 @@ while True: # This encapsulates the whole game logic.
         print(wrongMessages[random.randrange(len(wrongMessages))])
 
     question_no += 1
-    while driver.current_url != "https://kahoot.it/gameblock":
-        pass
-    time.sleep(2)
     
