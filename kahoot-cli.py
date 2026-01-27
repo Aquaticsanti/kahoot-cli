@@ -4,6 +4,7 @@ from termcolor import colored
 import time
 import os
 from readchar import readkey, key
+import random
 
 def cls(): # Source - https://stackoverflow.com/a/684344
     os.system('cls' if os.name=='nt' else 'clear')
@@ -37,6 +38,9 @@ def printSelectedAnswer(option_no: int):
             print(colored(f"  {ans_yellow.text}", "yellow", None, ["bold"])) # type: ignore
         if ans_green != "":
             print(colored(f"> {ans_green.text}", "green", None, ["bold"])) # type: ignore
+
+correctMessages = ["Way to go, superstar!", "Amazing!", "Trust me, your oponents are jealous.", "One step closer to victory!", "Keep the flame lit!"]
+wrongMessages = ["Don't worry, you'll get them next time!", "Never back down never what?", "", "Nice try!"]
 
 
 print(colored("""
@@ -159,9 +163,6 @@ if ans_green != "":
     print(colored(f"  {ans_green.text}", "green", None, ["bold"]))
 
 
-from readchar import readkey, key
-
-
 while True:
     print("\033[5A") # Moves cursor up 5 lines, Source - https://stackoverflow.com/a/72667369
     keypress = readkey()
@@ -176,6 +177,7 @@ while True:
             selected_ans = 0
         printSelectedAnswer(selected_ans)
     if keypress == key.ENTER:
+        printSelectedAnswer(selected_ans)
         if selected_ans == 0:
             ans_red.click()
         elif selected_ans == 1:
@@ -184,3 +186,21 @@ while True:
             ans_yellow.click() # type: ignore
         elif selected_ans == 3:
             ans_green.click() # type: ignore
+        break
+
+while driver.current_url != "https://kahoot.it/answer/result":
+    pass
+
+result_logo = driver.find_element(By.CSS_SELECTOR, "circle[cx='40']")
+
+if result_logo.get_attribute("fill") == "#66BF39":
+    result = "Correct!"
+elif result_logo.get_attribute("fill") == "#FFF":
+    result = "Wrong..."
+
+if "Correct" in result:
+    print(colored(result, "green", None, ["bold"]))
+    print(correctMessages[random.randrange(len(correctMessages))])
+elif "Wron" in result:
+    print(colored(result, "red", None, ["bold"]))
+    print(wrongMessages[random.randrange(len(wrongMessages))])
