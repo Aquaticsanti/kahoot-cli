@@ -63,6 +63,7 @@ while True:
                 website = pin
             else:
                 pin = int(pin)
+                website = "https://kahoot.it"
     except ValueError:
         pin = int(input("That doesn't look like a number... Please input the game pin (no spaces): "))
     else:
@@ -195,12 +196,12 @@ result_logo = driver.find_element(By.CSS_SELECTOR, "circle[cx='40']")
 
 if result_logo.get_attribute("fill") == "#66BF39":
     result = "Correct!"
-elif result_logo.get_attribute("fill") == "#FFF":
+elif result_logo.get_attribute("fill") == "#F35":
     result = "Wrong..."
 
 if "Correct" in result:
     print(colored(result, "green", None, ["bold"]))
     print(correctMessages[random.randrange(len(correctMessages))])
-elif "Wron" in result:
+elif "Wrong" in result:
     print(colored(result, "red", None, ["bold"]))
     print(wrongMessages[random.randrange(len(wrongMessages))])
