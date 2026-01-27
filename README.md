@@ -6,9 +6,9 @@ Features:
 - [X] Joining a game
 - [ ] Reactions
 - [ ] Avatars
-- [ ] Answering single choice questions
+- [X] Answering single choice questions
 - [ ] Answering multiple choice questions
-- [ ] Answering True or False questions
+- [X] Answering True or False questions (The colors are swapped, will have to fix that)
 - [ ] Displaying points
 - [ ] Finishing a game
 - [ ] Leaving a game

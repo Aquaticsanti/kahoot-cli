@@ -9,7 +9,7 @@ import random
 def cls(): # Source - https://stackoverflow.com/a/684344
     os.system('cls' if os.name=='nt' else 'clear')
 
-def printSelectedAnswer(option_no: int):
+def printSelectedAnswer(option_no: int = 0):
     if option_no == 0:
         print(colored(f"> {ans_red.text}", "red", None, ["bold"]))
         print(colored(f"  {ans_blue.text}", "blue", None, ["bold"]))
@@ -115,7 +115,7 @@ while True:
     elif driver.current_url == "https://kahoot.it/join":
         try:
             error_name_box = driver.find_element(By.CSS_SELECTOR, "[data-functional-selector='duplicate-name-error-notification']")
-        except NoSuchElementException:
+        except:
             break
         else:
             nickname = input("Uh oh, that name's taken... Choose another one (Don't use your real name): ")
@@ -134,74 +134,87 @@ while driver.current_url != "https://kahoot.it/gameblock":
     pass
 time.sleep(2)
 
-cls() # Source - https://stackoverflow.com/a/684344, Clears entire CLI
-
-question_title = driver.find_element(By.CSS_SELECTOR, "[data-functional-selector='block-title']")
 question_no = 1
 
-print(f"Question {question_no} - {question_title.text}")
+while True: # This encapsulates the whole game logic.
+    cls() # Source - https://stackoverflow.com/a/684344, Clears entire CLI
 
-ans_red = driver.find_element(By.CSS_SELECTOR, "[data-functional-selector='answer-0']")
-ans_blue = driver.find_element(By.CSS_SELECTOR, "[data-functional-selector='answer-1']")
+    question_title = driver.find_element(By.CSS_SELECTOR, "[data-functional-selector='block-title']")
 
-try:
-    ans_yellow = driver.find_element(By.CSS_SELECTOR, "[data-functional-selector='answer-2']")
-except NoSuchElementException:
-    ans_yellow = ""
+    print(f"Question {question_no} - {question_title.text}")
 
-try:
-    ans_green = driver.find_element(By.CSS_SELECTOR, "[data-functional-selector='answer-3']")
-except NoSuchElementException:
-    ans_green = ""
+    ans_red = driver.find_element(By.CSS_SELECTOR, "[data-functional-selector='answer-0']")
+    ans_blue = driver.find_element(By.CSS_SELECTOR, "[data-functional-selector='answer-1']")
 
-selected_ans = 0
+    try:
+        ans_yellow = driver.find_element(By.CSS_SELECTOR, "[data-functional-selector='answer-2']")
+        amountOptions = 2
+    except:
+        ans_yellow = ""
+        amountOptions = 1
 
-print(colored(f"  {ans_red.text}", "red", None, ["bold"]))
-print(colored(f"  {ans_blue.text}", "blue", None, ["bold"]))
-if ans_yellow != "":
-    print(colored(f"  {ans_yellow.text}", "yellow", None, ["bold"]))
-if ans_green != "":
-    print(colored(f"  {ans_green.text}", "green", None, ["bold"]))
+    try:
+        ans_green = driver.find_element(By.CSS_SELECTOR, "[data-functional-selector='answer-3']")
+        amountOptions = 3
+    except:
+        ans_green = ""
+        if ans_yellow != "":
+            amountOptions = 2
+
+    selected_ans = 0
+
+    print(colored(f"  {ans_red.text}", "red", None, ["bold"]))
+    print(colored(f"  {ans_blue.text}", "blue", None, ["bold"]))
+    if ans_yellow != "":
+        print(colored(f"  {ans_yellow.text}", "yellow", None, ["bold"]))
+    if ans_green != "":
+        print(colored(f"  {ans_green.text}", "green", None, ["bold"]))
 
 
-while True:
-    print("\033[5A") # Moves cursor up 5 lines, Source - https://stackoverflow.com/a/72667369
-    keypress = readkey()
-    if keypress == key.UP:
-        selected_ans -= 1
-        if selected_ans < 0:
-            selected_ans = 3
-        printSelectedAnswer(selected_ans)
-    if keypress == key.DOWN:
-        selected_ans += 1
-        if selected_ans > 3:
-            selected_ans = 0
-        printSelectedAnswer(selected_ans)
-    if keypress == key.ENTER:
-        printSelectedAnswer(selected_ans)
-        if selected_ans == 0:
-            ans_red.click()
-        elif selected_ans == 1:
-            ans_blue.click()
-        elif selected_ans == 2:
-            ans_yellow.click() # type: ignore
-        elif selected_ans == 3:
-            ans_green.click() # type: ignore
-        break
+    while True:
+        print("\033[5A") # Moves cursor up 5 lines, Source - https://stackoverflow.com/a/72667369
+        keypress = readkey()
+        if keypress == key.UP:
+            selected_ans -= 1
+            if selected_ans < 0:
+                selected_ans = amountOptions
+            printSelectedAnswer(selected_ans)
+        if keypress == key.DOWN:
+            selected_ans += 1
+            if selected_ans > amountOptions:
+                selected_ans = 0
+            printSelectedAnswer(selected_ans)
+        if keypress == key.ENTER:
+            printSelectedAnswer(selected_ans)
+            if selected_ans == 0:
+                ans_red.click()
+            elif selected_ans == 1:
+                ans_blue.click()
+            elif selected_ans == 2:
+                ans_yellow.click() # type: ignore
+            elif selected_ans == 3:
+                ans_green.click() # type: ignore
+            break
 
-while driver.current_url != "https://kahoot.it/answer/result":
-    pass
+    while driver.current_url != "https://kahoot.it/answer/result":
+        pass
 
-result_logo = driver.find_element(By.CSS_SELECTOR, "circle[cx='40']")
+    result_logo = driver.find_element(By.CSS_SELECTOR, "circle[cx='40']")
 
-if result_logo.get_attribute("fill") == "#66BF39":
-    result = "Correct!"
-elif result_logo.get_attribute("fill") == "#F35":
-    result = "Wrong..."
+    if result_logo.get_attribute("fill") == "#66BF39":
+        result = "Correct!"
+    elif result_logo.get_attribute("fill") == "#F35":
+        result = "Wrong..."
 
-if "Correct" in result:
-    print(colored(result, "green", None, ["bold"]))
-    print(correctMessages[random.randrange(len(correctMessages))])
-elif "Wrong" in result:
-    print(colored(result, "red", None, ["bold"]))
-    print(wrongMessages[random.randrange(len(wrongMessages))])
+    if "Correct" in result:
+        print(colored(result, "green", None, ["bold"]))
+        print(correctMessages[random.randrange(len(correctMessages))])
+    elif "Wrong" in result:
+        print(colored(result, "red", None, ["bold"]))
+        print(wrongMessages[random.randrange(len(wrongMessages))])
+
+    question_no += 1
+    while driver.current_url != "https://kahoot.it/gameblock":
+        pass
+    time.sleep(2)
+    
