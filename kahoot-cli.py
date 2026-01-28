@@ -50,31 +50,35 @@ def printSelectedAnswer(option_no: int = 0, question_type: str = "Quiz", picked_
         if option_no == 0:
             print(colored(f"> {ans_red.text}", "red", None, ["bold"]))
         elif option_no != 0:
-            print(colored(f"  {ans_red.text}", "red", None, ["bold"]))
-        elif 0 in picked_options:
-            print(colored(">", "white", None, ["bold"]) ,colored(f" {ans_red.text}", "red", None, ["bold"]))
-        elif option_no == 1:
+            if 0 in picked_options:
+                print(colored(">", "white", None, ["bold"]) ,colored(f"{ans_red.text}", "red", None, ["bold"]))
+            else:
+                print(colored(f"  {ans_red.text}", "red", None, ["bold"]))
+        if option_no == 1:
             print(colored(f"> {ans_blue.text}", "blue", None, ["bold"]))
         elif option_no != 1:
-            print(colored(f"  {ans_blue.text}", "blue", None, ["bold"]))
-        elif 1 in picked_options:
-            print(colored(">", "white", None, ["bold"]), colored(f" {ans_blue.text}", "blue", None, ["bold"]))
-        elif option_no == 2 and ans_yellow != "":
+            if 1 in picked_options:
+                print(colored(">", "white", None, ["bold"]), colored(f"{ans_blue.text}", "blue", None, ["bold"]))
+            else:
+                print(colored(f"  {ans_blue.text}", "blue", None, ["bold"]))
+        if option_no == 2 and ans_yellow != "":
             print(colored(f"> {ans_yellow.text}", "yellow", None, ["bold"]))
         elif option_no != 2 and ans_yellow != "":
-            print(colored(f"  {ans_yellow.text}", "yellow", None, ["bold"]))
-        elif 2 in picked_options:
-            print(colored(">", "white", None, ["bold"]), colored(f" {ans_yellow.text}", "yellow", None, ["bold"]))
-        elif option_no == 3 and ans_green != "":
+            if 2 in picked_options:
+                print(colored(">", "white", None, ["bold"]), colored(f"{ans_yellow.text}", "yellow", None, ["bold"]))
+            else:
+                print(colored(f"  {ans_yellow.text}", "yellow", None, ["bold"]))
+        if option_no == 3 and ans_green != "":
             print(colored(f"> {ans_green.text}", "green", None, ["bold"]))
         elif option_no != 3 and ans_green != "":
-            print(colored(f"  {ans_green.text}", "green", None, ["bold"])) 
-        elif 3 in picked_options:
-            print(colored(">", "white", None, ["bold"]), colored(f" {ans_green.text}", "green", None, ["bold"]))
-        elif option_no == amountOptions:
-            print(colored(f"> SUBMIT", None, None, ["bold"]))
+            if 3 in picked_options:
+               print(colored(">", "white", None, ["bold"]), colored(f"{ans_green.text}", "green", None, ["bold"]))
+            else:
+                print(colored(f"  {ans_green.text}", "green", None, ["bold"])) 
+        if option_no == amountOptions:
+            print(colored(f"> SUBMIT", "white", None, ["bold"]))
         elif option_no != amountOptions:
-            print(colored(f"  SUBMIT", None, None, ["bold"]))
+            print(colored(f"  SUBMIT", "white", None, ["bold"]))
     
 
 def getWinState():
@@ -204,7 +208,7 @@ while True: # This encapsulates the whole game logic.
     else:
         question_type = "Multi"
 
-    if question_type == "Quiz":
+    if question_type == "Quiz" or question_type == "TorF":
         print(f"Question {question_no} - {question_title.text}")
     elif question_type == "Multi":
         print(f"Question {question_no} - {question_title.text}", colored(" (MULTIPLE CHOICE!)", None, None, ["bold"]))
@@ -233,7 +237,7 @@ while True: # This encapsulates the whole game logic.
 
     selected_ans = 0
 
-    printSelectedAnswer()
+    printSelectedAnswer(selected_ans, question_type)
 
     while True:
         print(f"\033[{amountOptions+2}A") # Moves cursor up x lines, Source - https://stackoverflow.com/a/72667369
@@ -255,8 +259,8 @@ while True: # This encapsulates the whole game logic.
             else:
                 printSelectedAnswer(selected_ans, question_type, picked_ans)
         if keypress == key.ENTER:
-            printSelectedAnswer(selected_ans, question_type)
             if question_type == "Quiz" or question_type == "TorF":
+                printSelectedAnswer(selected_ans, question_type)
                 if selected_ans == 0:
                     ans_red.click()
                 elif selected_ans == 1:
@@ -267,6 +271,7 @@ while True: # This encapsulates the whole game logic.
                     ans_green.click()
                 break
             elif question_type == "Multi":
+                printSelectedAnswer(selected_ans, question_type, picked_ans)
                 if selected_ans == 0:
                     ans_red.click()
                     picked_ans.append(0)
@@ -281,6 +286,7 @@ while True: # This encapsulates the whole game logic.
                     picked_ans.append(3)
                 elif selected_ans == amountOptions:
                     submit_multi.click()
+                    break
 
 
     while driver.current_url != "https://kahoot.it/answer/result":
