@@ -137,6 +137,11 @@ if type(pin) == int:
 
 time.sleep(3)
 
+lang = driver.find_element(By.CSS_SELECTOR, "[data-functional-selector='kahoot-settings__language-picker']")
+lang.click()
+langEN = driver.find_element(By.CSS_SELECTOR, "[data-functional-selector='option-with-value-en']")
+langEN.click()
+
 while True:
     if driver.current_url == "https://kahoot.it/join":
         break
@@ -301,14 +306,24 @@ while True: # This encapsulates the whole game logic.
     
     result = getWinState()
 
-    points_increment = driver.find_element(By.CSS_SELECTOR, "[data-functional-selector='score-increment']")
-
     if result == True:
+        points_increment = driver.find_element(By.CSS_SELECTOR, "[data-functional-selector='score-increment']")
         print(colored(f"Correct! {points_increment.text} points", "green", None, ["bold"]))
         print(correctMessages[random.randrange(len(correctMessages))])
     elif result == False:
         print(colored("Wrong...", "red", None, ["bold"]))
         print(wrongMessages[random.randrange(len(wrongMessages))])
+
+    leaderboard_pos = driver.find_element(By.CSS_SELECTOR, "[data-functional-selector='player-rank']")
+    try:
+        nemesis = driver.find_element(By.CSS_SELECTOR, "[data-functional-selector='nemesis']")
+    except:
+        nemesis = ""
+    
+    if nemesis != "":
+        print(leaderboard_pos.text, nemesis.text)
+    else:
+        print(leaderboard_pos.text)
 
     question_no += 1
     
