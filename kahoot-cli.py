@@ -319,9 +319,15 @@ while True: # This encapsulates the whole game logic.
         nemesis = driver.find_element(By.CSS_SELECTOR, "[data-functional-selector='nemesis']")
     except:
         nemesis = ""
+    else:
+        nemesis_text = nemesis.text
+        for char in nemesis_text:
+            nemesis_text = nemesis_text.replace(char, "", 1)
+            if char == "\n":
+                break
     
     if nemesis != "":
-        print(leaderboard_pos.text, nemesis.text)
+        print(leaderboard_pos.text, nemesis_text)
     else:
         print(leaderboard_pos.text)
 

@@ -10,7 +10,7 @@ Features:
 - [X] Answering multiple choice questions
 - [X] Answering True or False questions
 - [X] Displaying points
-- [X] Displaying ranking (kinda bugged)
+- [X] Displaying ranking
 - [ ] Finishing a game
 - [ ] Leaving a game
 - [ ] Error handling (this name is taken, pin is invalid, kicked out, etc.)
