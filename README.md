@@ -4,6 +4,7 @@ Interact with any Kahoot quiz right from your terminal! Or import it and use it 
 
 Features:
 - [X] Joining a game
+- [ ] Joining a currently in progress game
 - [ ] Reactions
 - [ ] Avatars
 - [X] Answering single choice questions
