@@ -17,7 +17,6 @@ Interact with any Kahoot quiz right from your terminal! Or import it and use it 
 
 # Current Bugs:
 - [ ] Can't handle being kicked out
-- [ ] Can't handle joining in progress game
 - [ ] Crash if ran out of time
 - [ ] Won't detect if name was changed
 - [ ] Can't handle random name generator

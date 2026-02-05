@@ -190,23 +190,26 @@ while True:
             name_box.send_keys(nickname)
             name_submit.click()
             time.sleep(3)
+    elif driver.current_url == "https://kahoot.it/gameblock":
+        break
 
 
 while driver.current_url != "https://kahoot.it/start":
-    pass
+    if driver.current_url == "https://kahoot.it/gameblock":
+        break
+    else:
+        pass
 
-print("Get ready!")
-
-
-
-question_no = 1
+if driver.current_url == "https://kahoot.it/start":
+    print("Get ready!")
+    question_no = 1
+elif driver.current_url == "https://kahoot.it/gameblock":
+    question_no = driver.find_element(By.CSS_SELECTOR, "[data-functional-selector='question-index-counter']")
+    question_no = int(question_no.text)
 
 while True: # This encapsulates the whole game logic.
-    
-
     while driver.current_url != "https://kahoot.it/gameblock":
         pass
-    time.sleep(1)
 
     cls() # Source - https://stackoverflow.com/a/684344, Clears entire CLI
 
