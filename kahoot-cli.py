@@ -90,7 +90,7 @@ def getWinState():
         return False
 
 correctMessages = ["Way to go, superstar!", "Amazing!", "Trust me, your oponents are jealous.", "One step closer to victory!", "Keep the flame lit!"]
-wrongMessages = ["Don't worry, you'll get them next time!", "Never back down never what?", "", "Nice try!"]
+wrongMessages = ["Don't worry, you'll get them next time!", "Never back down never what?", "Nice try!"]
 
 
 print(colored("""
@@ -333,5 +333,39 @@ while True: # This encapsulates the whole game logic.
     else:
         print(leaderboard_pos.text)
 
-    question_no += 1
+    while True: # Check if game has finished, or if there's another question
+        if driver.current_url == "https://kahoot.it/gameblock":
+            question_no += 1
+            finished = False
+            break
+        elif driver.current_url == "https://kahoot.it/ranking":
+            finished = True
+            cls()
+            break
+        else:
+            pass
+
+    if finished == False:
+        pass
+    elif finished == True:
+        break
+
+print("The game has finished! (this is still WIP)")
+
+# I tried, ok
+#try:
+#    non_podium = driver.find_element(By.XPATH, "//*[contains(text(), 'place')]")
+#except:
+#    non_podium = False
+#
+#if non_podium != False:
+#    ranking = non_podium.text
+#    print(ranking)
+#    input()
+#else:
+#    print("Placeholder, but you're on the podium!")
+#    input()
+
+
+
     
