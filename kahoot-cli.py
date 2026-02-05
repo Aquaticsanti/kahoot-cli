@@ -203,7 +203,8 @@ while True: # This encapsulates the whole game logic.
     cls() # Source - https://stackoverflow.com/a/684344, Clears entire CLI
 
     question_title = driver.find_element(By.CSS_SELECTOR, "[data-functional-selector='block-title']")
-    total_points = driver.find_element(By.CSS_SELECTOR, "[data-functional-selector='bottom-bar-score']")
+    total_points_element = driver.find_element(By.CSS_SELECTOR, "[data-functional-selector='bottom-bar-score']")
+    total_points = total_points_element.text
 
     try:
         question_type = driver.find_element(By.CSS_SELECTOR, "[data-functional-selector='question-type-heading-trueOrFalseTitle']")
@@ -219,7 +220,7 @@ while True: # This encapsulates the whole game logic.
     else:
         question_type = "Multi"
 
-    print(colored(f"{nickname} - {total_points.text} points", "dark_grey"))
+    print(colored(f"{nickname} - {total_points} points", "dark_grey"))
     if question_type == "Quiz" or question_type == "TorF":
         print(f"Question {question_no} - {question_title.text}")
     elif question_type == "Multi":
@@ -350,21 +351,46 @@ while True: # This encapsulates the whole game logic.
     elif finished == True:
         break
 
-print("The game has finished! (this is still WIP)")
+try:
+    non_podium = driver.find_element(By.TAG_NAME, "text")
+except:
+    non_podium = False
 
-# I tried, ok
-#try:
-#    non_podium = driver.find_element(By.XPATH, "//*[contains(text(), 'place')]")
-#except:
-#    non_podium = False
-#
-#if non_podium != False:
-#    ranking = non_podium.text
-#    print(ranking)
-#    input()
-#else:
-#    print("Placeholder, but you're on the podium!")
-#    input()
+if non_podium != False:
+    ranking = non_podium.text
+    print(f"You scored {ranking}!")
+else:
+    print("Drumroll please...")
+    time_slept = 0
+    while True:
+        try:
+            podiumPlace = driver.find_element(By.CSS_SELECTOR, "path[fill='#FFC00A']")
+        except:
+            try:
+                podiumPlace = driver.find_element(By.CSS_SELECTOR, "path[fill='#CCC']")
+            except:
+                try:
+                    podiumPlace = driver.find_element(By.CSS_SELECTOR, "path[fill='#EB670F']")
+                except:
+                    time.sleep(1)
+                    time_slept += 1
+                    if time_slept > 7:
+                        print("Uh oh, there seems to be an error. You're on the podium though, look at the screen!")
+                        break
+                else:
+                    podiumPlace = 3
+                    print("You got", colored("3rd place,", (205, 127, 50)), f"with a total of {total_points} points!")
+                    break
+            else:
+                podiumPlace = 2
+                print("You got", colored("2nd place,", (192, 192, 192)), f"with a total of {total_points} points!")
+                break
+        else:
+            podiumPlace = 1
+            print("You got", colored("1st place,", (255, 215, 0)), f"with a total of {total_points} points!")
+            break
+
+input()
 
 
 

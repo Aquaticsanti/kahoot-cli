@@ -11,7 +11,7 @@ Interact with any Kahoot quiz right from your terminal! Or import it and use it 
 - [X] Answering True or False questions
 - [X] Displaying points
 - [X] Displaying ranking
-- [X] Finishing a game (can't display ranking yet, but it doesn't crash)
+- [X] Finishing a game
 - [ ] Leaving a game
 - [ ] Error handling (this name is taken, pin is invalid, kicked out, etc.)
 
