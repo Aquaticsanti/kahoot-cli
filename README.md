@@ -16,7 +16,6 @@ Interact with any Kahoot quiz right from your terminal! Or import it and use it 
 - [ ] Error handling (this name is taken, pin is invalid, kicked out, etc.)
 
 # Current Bugs:
-- [ ] Crash if name is taken
 - [ ] Can't handle being kicked out
 - [ ] Can't handle joining in progress game
 - [ ] Crash if ran out of time

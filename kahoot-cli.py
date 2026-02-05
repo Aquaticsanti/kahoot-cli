@@ -108,14 +108,15 @@ pin = ""
 while True:
     try:
         if pin == "":
-            pin = input("Input the game pin (no spaces): ")
+            pin = input("Input the game pin: ")
             if "https://kahoot.it" in pin: # For development purposes, this also takes copied links (I do not want to copy the pin manually)
                 website = pin
             else:
+                pin = pin.replace(" ", "")
                 pin = int(pin)
                 website = "https://kahoot.it"
     except ValueError:
-            pin = input("That doesn't look like a number... Please input the game pin (no spaces): ")
+            pin = input("That doesn't look like a number... Please input the game pin: ")
             if "https://kahoot.it" in pin: # For development purposes, this also takes copied links (I do not want to copy the pin manually)
                 website = pin
             else:
@@ -168,7 +169,14 @@ name_submit.click()
 
 while True:
     if driver.current_url == "https://kahoot.it/instructions":
-        print("You're in! See your name on the screen?")
+        try:
+            name_changed_alert = driver.find_element(By.CSS_SELECTOR, "[data-functional-selector='nickname-changed-notification']")
+        except:
+            print("You're in! See your name on the screen?")
+        else:
+            nickname = driver.find_element(By.CSS_SELECTOR, "[data-functional-selector='nickname']")
+            nickname = nickname.text
+            print(f"Your name has been changed to {nickname}")
         print(colored("Note: Reactions and avatars are not supported yet.", "dark_grey"))
         break
     elif driver.current_url == "https://kahoot.it/join":
