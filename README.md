@@ -27,6 +27,7 @@ Interact with any Kahoot quiz right from your terminal! Or import it and use it 
 - [ ] Can't deselect options in Multiple Choice
 - [ ] Can submit blank in multiple choice
 - [ ] Can submit a blank nickname
+- [ ] If a multiple choice answer is partially correct, it gets confused and just doesn't display anything
     
 # Why would anyone need this, since this just uses Selenium?
 
