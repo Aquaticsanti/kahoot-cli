@@ -76,9 +76,15 @@ def printSelectedAnswer(option_no: int = 0, question_type: str = "Quiz", picked_
             else:
                 print(colored(f"  {ans_green.text}", "green", None, ["bold"])) 
         if option_no == amountOptions:
-            print(colored(f"> SUBMIT", "white", None, ["bold"]))
+            if picked_options == []:
+                print(colored(f"> SUBMIT", "dark_grey", None, ["bold"]))
+            else:
+                print(colored(f"> SUBMIT", "white", None, ["bold"]))
         elif option_no != amountOptions:
-            print(colored(f"  SUBMIT", "white", None, ["bold"]))
+            if picked_options == []:
+                print(colored(f"  SUBMIT", "dark_grey", None, ["bold"]))
+            else:
+                print(colored(f"  SUBMIT", "white", None, ["bold"]))
     
 
 def getWinState():
@@ -323,8 +329,11 @@ while True: # This encapsulates the whole game logic.
                     elif 3 in picked_ans:
                         picked_ans.remove(3)
                 elif selected_ans == amountOptions:
-                    submit_multi.click()
-                    break
+                    if picked_ans == []:
+                        continue
+                    else:
+                        submit_multi.click()
+                        break
 
 
     while driver.current_url != "https://kahoot.it/answer/result":

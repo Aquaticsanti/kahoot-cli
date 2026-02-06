@@ -21,9 +21,9 @@ Interact with any Kahoot quiz right from your terminal! Or import it and use it 
 - [ ] Can't handle random name generator
 - [ ] Can't hande 2FA (yes that is a thing in kahoot)
 - [ ] Won't realize if name is too long (and gets truncated)
-- [ ] Can submit blank in multiple choice
 - [ ] Can submit a blank nickname
 - [ ] If a multiple choice answer is partially correct, it gets confused and just doesn't display anything
+- [ ] Won't detect irregular gamemodes (that it can't play)
     
 # Why would anyone need this, since this just uses Selenium?
 
