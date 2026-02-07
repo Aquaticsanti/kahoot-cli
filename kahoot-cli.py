@@ -297,7 +297,7 @@ while True:
             
 
 while driver.current_url != "https://kahoot.it/start":
-    if driver.current_url == "https://kahoot.it/gameblock":
+    if driver.current_url == "https://kahoot.it/gameblock" or driver.current_url == "https://kahoot.it/":
         break
     else:
         pass
@@ -308,6 +308,10 @@ if driver.current_url == "https://kahoot.it/start":
 elif driver.current_url == "https://kahoot.it/gameblock":
     question_no = driver.find_element(By.CSS_SELECTOR, "[data-functional-selector='question-index-counter']")
     question_no = int(question_no.text)
+elif driver.current_url == "https://kahoot.it/":
+    print("Uh oh, looks like you've been kicked out. Exiting...")
+    os._exit(1) # Source - https://stackoverflow.com/a/49950466
+
 
 while True: # This encapsulates the whole game logic.
     while driver.current_url != "https://kahoot.it/gameblock":
