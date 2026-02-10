@@ -1,4 +1,5 @@
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from termcolor import colored
 import time
@@ -134,7 +135,18 @@ while True:
     else:
         break
 
-driver = webdriver.Chrome()
+options = Options()
+optionsToAdd = ["--disable-component-extensions-with-background-pages", "--disable-default-apps", "--disable-extensions", 
+                "--disable-features=InterestFeedContentSuggestions", "--disable-features=Translate", "--mute-audio",
+                "--no-default-browser-check", "--no-first-run", "--ash-no-nudges", "--disable-search-engine-choice-screen",
+                "--propagate-iph-for-testing", "--disable-back-forward-cache", "--disable-features=BackForwardCache",
+                "--disable-features=HeavyAdPrivacyMitigations", "--no-process-per-site", "--disable-background-networking",
+                "--disable-component-update", "--disable-domain-reliability", "--disable-features=AutofillServerCommunication",
+                "--disable-features=CertificateTransparencyComponentUpdater", "--disable-sync", "--metrics-recording-only",
+                "--disable-features=OptimizationHints", "--single-process", "--headless=new"]
+for arg in optionsToAdd:
+    options.add_argument(arg)
+driver = webdriver.Chrome(options=options)
 driver.get(website)
 driver.implicitly_wait(0.5)
 
